@@ -8,7 +8,7 @@ use tracing::{error, info};
 #[command(author, version, about = "Postgres Bridge - PostgreSQL protocol bridge")]
 struct Args {
     /// PostgreSQL server address
-    #[arg(long, env = "DATABASE_URL")]
+    #[arg(long, env = "BRWSE_DATABASE_URL")]
     database_url: String,
 
     #[command(flatten)]

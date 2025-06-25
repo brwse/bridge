@@ -8,15 +8,15 @@ use tracing::{error, info};
 #[command(author, version, about = "HTTP Bridge - HTTP API protocol bridge for OpenAPI specs")]
 struct Args {
     /// Path to OpenAPI specification file (JSON or YAML)
-    #[arg(long, env = "OPENAPI_SPEC_PATH")]
+    #[arg(long, env = "BRWSE_OPENAPI_SPEC_PATH")]
     openapi_spec: String,
 
     /// Base URL for the API (overrides spec's servers)
-    #[arg(long, env = "API_BASE_URL")]
+    #[arg(long, env = "BRWSE_API_BASE_URL")]
     base_url: Option<String>,
 
     /// Default timeout for HTTP requests in seconds
-    #[arg(long, default_value = "30")]
+    #[arg(long, default_value = "30", env = "BRWSE_HTTP_TIMEOUT")]
     timeout: u64,
 
     #[command(flatten)]

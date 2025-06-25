@@ -13,15 +13,15 @@ pub struct RegistryArgs {
     pub registry_endpoint: String,
 
     /// Public key for JWT token validation (PEM format)
-    #[arg(long, env = "BRWSE_PUBLIC_KEY")]
+    #[arg(long, env = "BRWSE_REGISTRY_PUBLIC_KEY")]
     pub public_key: String,
 
     /// Token refresh interval in seconds
-    #[arg(long, default_value = "300")]
+    #[arg(long, default_value = "300", env = "BRWSE_REGISTRY_REFRESH_INTERVAL")]
     pub refresh_interval: u64,
 
     /// Token refresh leeway in seconds
-    #[arg(long, default_value = "30")]
+    #[arg(long, default_value = "30", env = "BRWSE_REGISTRY_REFRESH_LEEWAY")]
     pub refresh_leeway: u64,
 
     /// Bridge registration token
@@ -32,7 +32,7 @@ pub struct RegistryArgs {
 #[derive(Args, Clone)]
 pub struct BridgeArgs {
     /// Bridge listen address
-    #[arg(long, default_value = "127.0.0.1:0")]
+    #[arg(long, default_value = "127.0.0.1:9000", env = "BRWSE_BRIDGE_LISTEN")]
     pub listen: String,
 
     #[command(flatten)]
