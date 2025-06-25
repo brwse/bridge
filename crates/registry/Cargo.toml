@@ -1,6 +1,6 @@
 [package]
 name = "brwse-bridge-registry"
-version = "0.1.0"
+version = "0.0.2"
 description = "Registry service for managing bridges in Brwse."
 edition.workspace = true
 license.workspace = true

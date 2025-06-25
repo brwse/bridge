@@ -370,9 +370,24 @@ checksum = "3eeab4423108c5d7c744f4d234de88d18d636100093ae04caf4825134b9c3a32"
 
 [[package]]
 name = "brwse-bridge-cli"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
- "brwse-bridge-registry",
+ "brwse-bridge-registry 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "chrono",
+ "clap",
+ "jsonwebtoken",
+ "tokio",
+ "tokio-util",
+ "tracing",
+]
+
+[[package]]
+name = "brwse-bridge-cli"
+version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "354295c58758a434625db1b9c687b341bfc4407850ff72d66d9ec81b67e92af0"
+dependencies = [
+ "brwse-bridge-registry 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "chrono",
  "clap",
  "jsonwebtoken",
@@ -383,11 +398,11 @@ dependencies = [
 
 [[package]]
 name = "brwse-bridge-http"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "async-trait",
  "base64 0.22.1",
- "brwse-bridge-cli",
+ "brwse-bridge-cli 0.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "clap",
  "futures",
  "genawaiter",
@@ -414,13 +429,13 @@ dependencies = [
 
 [[package]]
 name = "brwse-bridge-postgres"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "anyhow",
  "async-trait",
  "base64 0.22.1",
  "base64-serde",
- "brwse-bridge-cli",
+ "brwse-bridge-cli 0.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "byteorder",
  "bytes",
  "cidr",
@@ -450,7 +465,7 @@ dependencies = [
 
 [[package]]
 name = "brwse-bridge-registry"
-version = "0.1.0"
+version = "0.0.2"
 dependencies = [
  "anyhow",
  "assert2",
@@ -473,6 +488,32 @@ dependencies = [
  "thiserror",
  "tokio",
  "tokio-stream",
+ "tokio-util",
+ "tonic",
+ "tonic-build",
+ "tracing",
+]
+
+[[package]]
+name = "brwse-bridge-registry"
+version = "0.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9dd79259c0d18b08819dbfceb02afd46152a766d16c1cdac44bd1cf58225c216"
+dependencies = [
+ "assert2",
+ "async-trait",
+ "byteorder",
+ "bytes",
+ "chrono",
+ "derive_builder",
+ "futures",
+ "jsonwebtoken",
+ "prost",
+ "prost-types",
+ "serde",
+ "testcontainers-modules",
+ "thiserror",
+ "tokio",
  "tokio-util",
  "tonic",
  "tonic-build",

@@ -1,12 +1,13 @@
 [package]
 name = "brwse-bridge-cli"
-version = "0.1.0"
+version = "0.0.1"
+description = "CLI library for Brwse bridges."
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
 
 [dependencies]
-brwse-bridge-registry.workspace = true
+brwse-bridge-registry = { version = "0.0.2" }
 chrono.workspace = true
 clap.workspace = true
 jsonwebtoken.workspace = true
