@@ -1,0 +1,39 @@
+[package]
+name = "brwse-bridge-http"
+version = "0.1.0"
+description = "Experimental HTTP bridge for Brwse."
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "http-bridge"
+path = "src/bin/http-bridge.rs"
+
+[dependencies]
+rand.workspace = true
+async-trait.workspace = true
+base64.workspace = true
+brwse-bridge-cli.workspace = true
+clap.workspace = true
+futures.workspace = true
+indexmap.workspace = true
+rmcp.workspace = true
+serde_json.workspace = true
+serde.workspace = true
+time.workspace = true
+tokio-util.workspace = true
+tokio.workspace = true
+tracing-subscriber.workspace = true
+tracing.workspace = true
+genawaiter.workspace = true
+reqwest.workspace = true
+serde_yaml.workspace = true
+openapiv3 = "2.0"
+thiserror = "2.0"
+jsonschema = "0.30"
+
+[dev-dependencies]
+insta.workspace = true
+tempfile = "3.0"
+wiremock = "0.6"

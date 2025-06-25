@@ -1,0 +1,69 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.package]
+edition = "2024"
+license = "BUSL-1.1"
+repository = "https://github.com/brwse/bridge.git"
+
+[workspace.dependencies]
+assert2 = "0.3"
+brwse-bridge-cli = { path = "crates/bridge-cli" }
+brwse-bridge-registry = { path = "crates/registry" }
+byteorder = "1.5"
+tokio = { version = "1.45", features = ["full"] }
+tokio-util = { version = "0.7", features = ["codec"] }
+async-trait = "0.1"
+futures = "0.3"
+testcontainers-modules = { version = "0.12", features = ["postgres"] }
+bytes = "1.10"
+tracing = "0.1"
+tokio-postgres = { version = "0.7", features = [
+    "array-impls",
+    "with-cidr-0_3",
+    "with-uuid-1",
+    "with-time-0_3",
+    "with-geo-types-0_7",
+    "with-eui48-1",
+    "with-serde_json-1",
+] }
+tokio-native-tls = { version = "0.3" }
+genawaiter = "0.99"
+base64 = "0.22"
+base64-serde = "0.8"
+geo-types = { version = "0.7", features = ["serde"] }
+eui48 = { version = "1.1", features = ["serde"] }
+cidr = { version = "0.3", features = ["serde"] }
+uuid = { version = "1.17", features = ["serde"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value"] }
+insta = { version = "1.43", features = ["filters", "json"] }
+anyhow = "1.0"
+tracing-subscriber = "0.3"
+headless_chrome = "1.0"
+derive-into-owned = "0.2"
+tokio-tungstenite = "0.27"
+tonic = "0.13"
+prost = "0.13"
+prost-types = "0.13"
+tonic-build = "0.13"
+jsonwebtoken = "9.3"
+rmcp = { version = "0.1", features = [
+    "server",
+    "transport-sse-server",
+    "client",
+    "transport-child-process",
+] }
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "2.0"
+indexmap = { version = "2.9", features = ["serde"] }
+rand = "0.9"
+tokio-stream = "0.1"
+rsa = "0.9"
+test-log = "0.2"
+time = { version = "0.3", features = ["serde"] }
+derive_builder = "0.20"
+clap = { version = "4.0", features = ["derive", "env"] }
+reqwest = { version = "0.12", features = ["json"] }
+serde_yaml = "0.9"

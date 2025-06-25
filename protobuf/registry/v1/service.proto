@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package brwse.bridge.registry.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Bridge Registration Service
+//
+// Handles initial bridge registration using Bridge Registration Tokens (BRT)
+// and manages long-lived token lifecycle
+service BridgeRegistryService {
+  // Register a new bridge using a Bridge Registration Token (BRT)
+  rpc RegisterBridge(RegisterBridgeRequest) returns (RegisterBridgeResponse);
+
+  // Refresh/rotate a long-lived token.
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+}
+
+// Request to register a new bridge
+message RegisterBridgeRequest {
+  // Bridge Registration Token (BRT) - short-lived, one-time use
+  string br_token = 1;
+}
+
+// Response from bridge registration
+message RegisterBridgeResponse {
+  // Long-lived access token for future operations
+  string access_token = 1;
+
+  // Token expiration time
+  google.protobuf.Timestamp expires_at = 2;
+
+  // Refresh token for token rotation
+  string refresh_token = 3;
+}
+
+// Request to refresh/rotate a token
+message RefreshTokenRequest {
+  // Current access token
+  string access_token = 1;
+
+  // Refresh token
+  string refresh_token = 2;
+}
+
+// Response from token refresh
+message RefreshTokenResponse {
+  // New access token
+  string access_token = 1;
+
+  // New token expiration time
+  google.protobuf.Timestamp expires_at = 2;
+
+  // New refresh token
+  string refresh_token = 3;
+}
