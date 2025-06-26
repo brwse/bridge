@@ -9,12 +9,12 @@ use tracing::{error, info};
 #[derive(Args, Clone)]
 pub struct RegistryArgs {
     /// Registry endpoint
-    #[arg(long, env = "BRWSE_REGISTRY_ENDPOINT")]
+    #[arg(long, default_value = "https://registry.brwse.ai", env = "BRWSE_REGISTRY_ENDPOINT")]
     pub registry_endpoint: String,
 
     /// Public key for JWT token validation (PEM format)
     #[arg(long, env = "BRWSE_REGISTRY_PUBLIC_KEY")]
-    pub public_key: String,
+    pub public_key: Option<String>,
 
     /// Token refresh interval in seconds
     #[arg(long, default_value = "300", env = "BRWSE_REGISTRY_REFRESH_INTERVAL")]
@@ -25,8 +25,8 @@ pub struct RegistryArgs {
     pub refresh_leeway: u64,
 
     /// Bridge registration token
-    #[arg(long, env = "BRWSE_REGISTRY_TOKEN")]
-    pub br_token: String,
+    #[arg(long, env = "BRWSE_REGISTRY_TOKEN", requires = "public_key")]
+    pub br_token: Option<String>,
 }
 
 #[derive(Args, Clone)]
@@ -36,19 +36,21 @@ pub struct BridgeArgs {
     pub listen: String,
 
     #[command(flatten)]
-    pub registry: Option<RegistryArgs>,
+    pub registry: RegistryArgs,
 }
 
 pub async fn setup_registry(args: &RegistryArgs) {
     // Parse the public key for JWT validation
-    let decoding_key = DecodingKey::from_rsa_pem(args.public_key.as_bytes()).unwrap_or_else(|e| {
-        error!("Failed to parse public key: {}", e);
-        process::exit(1);
-    });
+    let decoding_key =
+        DecodingKey::from_rsa_pem(args.public_key.as_ref().expect("should be set").as_bytes())
+            .unwrap_or_else(|e| {
+                error!("Failed to parse public key: {}", e);
+                process::exit(1);
+            });
 
     // Build the registry client
     let registry_client = ClientBuilder::default()
-        .endpoint(args.registry_endpoint.clone())
+        .endpoint(&args.registry_endpoint)
         .decoding_key(decoding_key)
         .refresh_leeway(Duration::seconds(args.refresh_leeway as i64))
         .build()
@@ -60,7 +62,8 @@ pub async fn setup_registry(args: &RegistryArgs) {
 
     // Register the bridge
     info!("Registering bridge with registry...");
-    if let Err(e) = registry_client.register(args.br_token.clone()).await {
+    if let Err(e) = registry_client.register(args.br_token.as_deref().expect("should be set")).await
+    {
         error!("Failed to register bridge: {}", e);
         process::exit(1);
     }

@@ -30,8 +30,8 @@ async fn main() {
     let args = Args::parse();
 
     // Setup registry
-    if let Some(registry) = args.bridge.registry {
-        setup_registry(&registry).await;
+    if args.bridge.registry.br_token.is_some() {
+        setup_registry(&args.bridge.registry).await;
     }
 
     // Load and parse OpenAPI spec

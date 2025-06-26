@@ -14,7 +14,7 @@ path = "src/bin/postgres-bridge.rs"
 async-trait.workspace = true
 base64-serde.workspace = true
 base64.workspace = true
-brwse-bridge-cli = { version = "0.0.1" }
+brwse-bridge-cli.workspace = true
 byteorder.workspace = true
 bytes.workspace = true
 cidr.workspace = true

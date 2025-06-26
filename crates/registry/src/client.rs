@@ -91,8 +91,8 @@ impl Client {
         ClientBuilder::default()
     }
 
-    pub async fn register(&self, br_token: String) -> Result<()> {
-        let request = tonic::Request::new(RegisterBridgeRequest { br_token });
+    pub async fn register(&self, br_token: &str) -> Result<()> {
+        let request = tonic::Request::new(RegisterBridgeRequest { br_token: br_token.to_owned() });
         let mut client = self.grpc_client.clone();
         let response = client.register_bridge(request).await?.into_inner();
 

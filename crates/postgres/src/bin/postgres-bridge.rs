@@ -8,7 +8,11 @@ use tracing::{error, info};
 #[command(author, version, about = "Postgres Bridge - PostgreSQL protocol bridge")]
 struct Args {
     /// PostgreSQL server address
-    #[arg(long, env = "BRWSE_DATABASE_URL")]
+    #[arg(
+        long,
+        env = "BRWSE_DATABASE_URL",
+        default_value = "postgres://postgres:postgres@localhost:5432/postgres"
+    )]
     database_url: String,
 
     #[command(flatten)]
@@ -22,8 +26,8 @@ async fn main() {
     let args = Args::parse();
 
     // Setup registry
-    if let Some(registry) = args.bridge.registry {
-        setup_registry(&registry).await;
+    if args.bridge.registry.br_token.is_some() {
+        setup_registry(&args.bridge.registry).await;
     }
 
     // Build the PostgreSQL bridge

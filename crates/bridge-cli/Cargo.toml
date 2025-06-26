@@ -7,7 +7,7 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
-brwse-bridge-registry = { version = "0.0.2" }
+brwse-bridge-registry.workspace = true
 chrono.workspace = true
 clap.workspace = true
 jsonwebtoken.workspace = true
