@@ -1,6 +1,6 @@
 [package]
 name = "brwse-bridge-postgres"
-version = "0.0.1"
+version = "0.0.2"
 description = "Experimental PostgreSQL bridge for Brwse."
 edition.workspace = true
 license.workspace = true
@@ -25,6 +25,9 @@ genawaiter.workspace = true
 geo-types.workspace = true
 indexmap.workspace = true
 openssl.workspace = true
+jsonschema.workspace = true
+assert2.workspace = true
+schemars.workspace = true
 rand.workspace = true
 rmcp.workspace = true
 serde_json.workspace = true

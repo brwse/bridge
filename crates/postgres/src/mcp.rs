@@ -2,22 +2,32 @@ mod value;
 
 use std::{io, sync::Arc};
 
+use assert2::let_assert;
 use indexmap::IndexMap;
 pub use rmcp::handler::server::tool::Parameters;
 use rmcp::{
-    model::{CallToolResult, Content, ServerCapabilities, ServerInfo},
-    tool,
+    RoleServer,
+    model::{
+        CallToolRequestParam, CallToolResult, Content, ListToolsResult, PaginatedRequestParam,
+        ServerCapabilities, ServerInfo, Tool,
+    },
+    service::RequestContext,
     transport::{SseServer, sse_server::SseServerConfig},
 };
+use schemars::{JsonSchema, schema_for};
 use serde::{Deserialize, Serialize};
+use serde_json::Value as JsonValue;
 use tokio_postgres::types::ToSql;
 use tokio_util::sync::CancellationToken;
 
-use crate::mcp::value::Value;
+use crate::{mcp::value::Value, schema::remove_excess};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[schemars(transform = remove_excess)]
 pub struct QueryParam {
+    /// The SQL query to execute.
     pub query: String,
+    /// The parameters to pass to the query.
     pub params: Vec<Value>,
 }
 
@@ -26,17 +36,12 @@ pub struct PostgresMcpServer {
     client: Arc<tokio_postgres::Client>,
 }
 
-#[tool(tool_box)]
 impl PostgresMcpServer {
     fn new(client: Arc<tokio_postgres::Client>) -> Self {
         Self { client }
     }
 
-    #[tool(description = "Execute a query")]
-    async fn query(
-        &self,
-        Parameters(params): Parameters<QueryParam>,
-    ) -> Result<CallToolResult, rmcp::Error> {
+    async fn query(&self, params: QueryParam) -> Result<CallToolResult, rmcp::Error> {
         let rows = match self
             .client
             .query(
@@ -73,7 +78,6 @@ impl PostgresMcpServer {
     }
 }
 
-#[tool(tool_box)]
 impl rmcp::ServerHandler for PostgresMcpServer {
     fn get_info(&self) -> ServerInfo {
         ServerInfo {
@@ -81,6 +85,33 @@ impl rmcp::ServerHandler for PostgresMcpServer {
             capabilities: ServerCapabilities::builder().enable_tools().build(),
             ..Default::default()
         }
+    }
+
+    async fn list_tools(
+        &self,
+        _request: PaginatedRequestParam,
+        _context: RequestContext<RoleServer>,
+    ) -> Result<ListToolsResult, rmcp::Error> {
+        let schema = schema_for!(QueryParam);
+        let_assert!(JsonValue::Object(schema) = schema.to_value());
+        Ok(ListToolsResult {
+            next_cursor: None,
+            tools: vec![Tool::new("query", "Query the database", Arc::new(schema))],
+        })
+    }
+
+    async fn call_tool(
+        &self,
+        request: CallToolRequestParam,
+        _context: RequestContext<RoleServer>,
+    ) -> Result<CallToolResult, rmcp::Error> {
+        let arguments = request.arguments.map(JsonValue::Object).unwrap_or_default();
+        let params = serde_json::from_value::<QueryParam>(arguments).map_err(|e| {
+            rmcp::Error::invalid_params(format!("failed to parse arguments: {e}"), None)
+        })?;
+
+        // Execute tool directly from spec
+        self.query(params).await
     }
 }
 

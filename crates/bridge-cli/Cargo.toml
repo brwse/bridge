@@ -1,6 +1,6 @@
 [package]
 name = "brwse-bridge-cli"
-version = "0.0.1"
+version = "0.0.2"
 description = "CLI library for Brwse bridges."
 edition.workspace = true
 license.workspace = true

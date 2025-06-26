@@ -31,6 +31,7 @@ indexmap = { version = "2.9", features = ["serde"] }
 insta = { version = "1.43", features = ["filters", "json"] }
 jsonschema = "0.30"
 jsonwebtoken = "9.3"
+schemars = "1.0"
 openssl = { version = "0.10", features = ["vendored"] }
 prost = "0.13"
 prost-types = "0.13"
