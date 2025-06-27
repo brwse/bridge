@@ -13,8 +13,8 @@ assert2 = "0.3"
 async-trait = "0.1"
 base64 = "0.22"
 base64-serde = "0.8"
-brwse-bridge-cli = { path = "crates/bridge-cli" }
-brwse-bridge-registry = { path = "crates/registry" }
+brwse-bridge-cli = { path = "crates/bridge-cli", version = "0.0.2" }
+brwse-bridge-registry = { path = "crates/registry", version = "0.0.3" }
 byteorder = "1.5"
 bytes = "1.10"
 chrono = { version = "0.4", features = ["serde"] }
