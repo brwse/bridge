@@ -391,7 +391,7 @@ dependencies = [
  "clap",
  "futures",
  "genawaiter",
- "indexmap 2.9.0",
+ "indexmap 2.10.0",
  "insta",
  "jsonschema",
  "openapiv3",
@@ -416,25 +416,12 @@ dependencies = [
 name = "brwse-bridge-mcp"
 version = "0.0.1"
 dependencies = [
- "async-trait",
- "base64 0.22.1",
  "brwse-bridge-cli",
  "clap",
  "futures",
- "genawaiter",
- "indexmap 2.9.0",
  "insta",
- "jsonschema",
- "openapiv3",
- "openssl",
- "rand 0.9.1",
- "reqwest",
  "rmcp 0.1.5 (git+https://github.com/modelcontextprotocol/rust-sdk.git)",
- "serde",
- "serde_json",
- "serde_yaml",
  "tempfile",
- "thiserror",
  "time",
  "tokio",
  "tokio-util",
@@ -462,13 +449,13 @@ dependencies = [
  "futures",
  "genawaiter",
  "geo-types",
- "indexmap 2.9.0",
+ "indexmap 2.10.0",
  "insta",
  "jsonschema",
  "openssl",
  "rand 0.9.1",
  "rmcp 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "schemars 1.0.1",
+ "schemars 1.0.3",
  "serde",
  "serde_json",
  "testcontainers-modules",
@@ -1209,7 +1196,7 @@ dependencies = [
  "futures-core",
  "futures-sink",
  "http",
- "indexmap 2.9.0",
+ "indexmap 2.10.0",
  "slab",
  "tokio",
  "tokio-util",
@@ -1583,9 +1570,9 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.9.0"
+version = "2.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cea70ddb795996207ad57735b50c5982d8844f38ba9ee5f1aedcfb708a2aa11e"
+checksum = "fe4cd85333e22411419a0bcae1297d25e58c9443848b11dc6a86fefe8c78a661"
 dependencies = [
  "equivalent",
  "hashbrown 0.15.4",
@@ -2001,7 +1988,7 @@ version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5c8d427828b22ae1fff2833a03d8486c2c881367f1c336349f307f321e7f4d05"
 dependencies = [
- "indexmap 2.9.0",
+ "indexmap 2.10.0",
  "serde",
  "serde_json",
 ]
@@ -2158,7 +2145,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3672b37090dbd86368a4145bc067582552b29c27377cad4e0a306c97f9bd7772"
 dependencies = [
  "fixedbitset",
- "indexmap 2.9.0",
+ "indexmap 2.10.0",
 ]
 
 [[package]]
@@ -2454,7 +2441,7 @@ dependencies = [
  "once_cell",
  "socket2",
  "tracing",
- "windows-sys 0.52.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
@@ -2930,13 +2917,13 @@ dependencies = [
 
 [[package]]
 name = "schemars"
-version = "1.0.1"
+version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fe8c9d1c68d67dd9f97ecbc6f932b60eb289c5dbddd8aa1405484a8fd2fcd984"
+checksum = "1375ba8ef45a6f15d83fa8748f1079428295d403d6ea991d09ab100155fbc06d"
 dependencies = [
  "dyn-clone",
  "ref-cast",
- "schemars_derive 1.0.1",
+ "schemars_derive 1.0.3",
  "serde",
  "serde_json",
 ]
@@ -2955,9 +2942,9 @@ dependencies = [
 
 [[package]]
 name = "schemars_derive"
-version = "1.0.1"
+version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6ca9fcb757952f8e8629b9ab066fc62da523c46c2b247b1708a3be06dd82530b"
+checksum = "2b13ed22d6d49fe23712e068770b5c4df4a693a2b02eeff8e7ca3135627a24f6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3099,7 +3086,7 @@ dependencies = [
  "chrono",
  "hex",
  "indexmap 1.9.3",
- "indexmap 2.9.0",
+ "indexmap 2.10.0",
  "schemars 0.9.0",
  "serde",
  "serde_derive",
@@ -3126,7 +3113,7 @@ version = "0.9.34+deprecated"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6a8b1a1a2ebf674015cc02edccce75287f1a0130d394307b36743c2f5d504b47"
 dependencies = [
- "indexmap 2.9.0",
+ "indexmap 2.10.0",
  "itoa",
  "ryu",
  "serde",
@@ -3702,7 +3689,7 @@ checksum = "d039ad9159c98b70ecfd540b2573b97f7f52c3e8d9f8ad57a24b916a536975f9"
 dependencies = [
  "futures-core",
  "futures-util",
- "indexmap 2.9.0",
+ "indexmap 2.10.0",
  "pin-project-lite",
  "slab",
  "sync_wrapper",

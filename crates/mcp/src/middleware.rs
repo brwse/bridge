@@ -10,104 +10,106 @@ use rmcp::{
 };
 
 #[expect(unused_variables, reason = "middleware methods are not implemented")]
-#[async_trait::async_trait]
 pub trait Middleware: 'static + Send + Sync {
-    async fn ping(&self, _context: RequestContext<RoleServer>) -> Result<(), rmcp::Error> {
-        Ok(())
+    fn ping(
+        &self,
+        _context: RequestContext<RoleServer>,
+    ) -> impl Future<Output = Result<(), rmcp::Error>> + Send {
+        async { Ok(()) }
     }
-    // handle requests
-    async fn initialize(
+
+    fn initialize(
         &self,
         request: InitializeRequestParam,
         context: RequestContext<RoleServer>,
-    ) -> Result<InitializeRequestParam, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<InitializeRequestParam, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
-    async fn complete(
+    fn complete(
         &self,
         request: CompleteRequestParam,
         context: RequestContext<RoleServer>,
-    ) -> Result<CompleteRequestParam, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<CompleteRequestParam, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 
-    async fn set_level(
+    fn set_level(
         &self,
         request: SetLevelRequestParam,
         context: RequestContext<RoleServer>,
-    ) -> Result<SetLevelRequestParam, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<SetLevelRequestParam, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
-    async fn get_prompt(
+    fn get_prompt(
         &self,
         request: GetPromptRequestParam,
         context: RequestContext<RoleServer>,
-    ) -> Result<GetPromptRequestParam, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<GetPromptRequestParam, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 
-    async fn list_prompts(
+    fn list_prompts(
         &self,
         request: Option<PaginatedRequestParam>,
         context: RequestContext<RoleServer>,
-    ) -> Result<Option<PaginatedRequestParam>, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<Option<PaginatedRequestParam>, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 
-    async fn list_resources(
+    fn list_resources(
         &self,
         request: Option<PaginatedRequestParam>,
         context: RequestContext<RoleServer>,
-    ) -> Result<Option<PaginatedRequestParam>, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<Option<PaginatedRequestParam>, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 
-    async fn list_resource_templates(
+    fn list_resource_templates(
         &self,
         request: Option<PaginatedRequestParam>,
         context: RequestContext<RoleServer>,
-    ) -> Result<Option<PaginatedRequestParam>, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<Option<PaginatedRequestParam>, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 
-    async fn read_resource(
+    fn read_resource(
         &self,
         request: ReadResourceRequestParam,
         context: RequestContext<RoleServer>,
-    ) -> Result<ReadResourceRequestParam, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<ReadResourceRequestParam, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 
-    async fn subscribe(
+    fn subscribe(
         &self,
         request: SubscribeRequestParam,
         context: RequestContext<RoleServer>,
-    ) -> Result<SubscribeRequestParam, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<SubscribeRequestParam, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 
-    async fn unsubscribe(
+    fn unsubscribe(
         &self,
         request: UnsubscribeRequestParam,
         context: RequestContext<RoleServer>,
-    ) -> Result<UnsubscribeRequestParam, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<UnsubscribeRequestParam, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 
-    async fn call_tool(
+    fn call_tool(
         &self,
         request: CallToolRequestParam,
         context: RequestContext<RoleServer>,
-    ) -> Result<CallToolRequestParam, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<CallToolRequestParam, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 
-    async fn list_tools(
+    fn list_tools(
         &self,
         request: Option<PaginatedRequestParam>,
         context: RequestContext<RoleServer>,
-    ) -> Result<Option<PaginatedRequestParam>, rmcp::Error> {
-        Ok(request)
+    ) -> impl Future<Output = Result<Option<PaginatedRequestParam>, rmcp::Error>> + Send {
+        async { Ok(request) }
     }
 }
 
