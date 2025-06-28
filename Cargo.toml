@@ -41,7 +41,6 @@ rmcp = { version = "0.1", features = [
     "server",
     "transport-sse-server",
     "client",
-    "transport-child-process",
 ] }
 rsa = "0.9"
 serde = { version = "1", features = ["derive"] }
@@ -70,6 +69,6 @@ tonic-build = "0.13"
 tracing = "0.1"
 tracing-subscriber = "0.3"
 urlencoding = "2.1"
-uuid = { version = "1.17", features = ["serde"] }
+uuid = { version = "1.17", features = ["serde", "v7"] }
 tempfile = "3.0"
 wiremock = "0.6"

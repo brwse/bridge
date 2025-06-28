@@ -20,7 +20,7 @@ use serde_json::Value as JsonValue;
 use tokio_postgres::types::ToSql;
 use tokio_util::sync::CancellationToken;
 
-use crate::{mcp::value::Value, schema::remove_excess};
+use crate::{bridge::value::Value, schema::remove_excess};
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[schemars(transform = remove_excess)]
@@ -32,11 +32,11 @@ pub struct QueryParam {
 }
 
 #[derive(Clone)]
-pub struct PostgresMcpServer {
+pub struct PostgresBridge {
     client: Arc<tokio_postgres::Client>,
 }
 
-impl PostgresMcpServer {
+impl PostgresBridge {
     fn new(client: Arc<tokio_postgres::Client>) -> Self {
         Self { client }
     }
@@ -78,7 +78,7 @@ impl PostgresMcpServer {
     }
 }
 
-impl rmcp::ServerHandler for PostgresMcpServer {
+impl rmcp::ServerHandler for PostgresBridge {
     fn get_info(&self) -> ServerInfo {
         ServerInfo {
             instructions: Some("A PostgreSQL database".into()),
@@ -128,6 +128,6 @@ pub async fn start(
     };
 
     let sse_server = SseServer::serve_with_config(config).await?;
-    sse_server.with_service(move || PostgresMcpServer::new(Arc::clone(&client)));
+    sse_server.with_service(move || PostgresBridge::new(Arc::clone(&client)));
     Ok(ctoken)
 }

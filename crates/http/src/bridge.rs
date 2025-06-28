@@ -637,13 +637,13 @@ pub struct HttpRequest {
 }
 
 #[derive(Clone)]
-pub struct HttpMcpService {
+pub struct HTTPBridge {
     spec: Arc<OpenAPI>,
     base_url: String,
     client: Arc<reqwest::Client>,
 }
 
-impl HttpMcpService {
+impl HTTPBridge {
     pub fn new(spec: Arc<OpenAPI>, base_url: String, client: Arc<reqwest::Client>) -> Self {
         Self { spec, base_url, client }
     }
@@ -825,7 +825,7 @@ impl HttpMcpService {
     }
 }
 
-impl rmcp::ServerHandler for HttpMcpService {
+impl rmcp::ServerHandler for HTTPBridge {
     fn get_info(&self) -> ServerInfo {
         ServerInfo {
             instructions: Some(format!("HTTP API bridge. Base URL: {}", self.base_url)),
@@ -872,7 +872,7 @@ pub async fn start(
 
     let sse_server = SseServer::serve_with_config(config).await?;
     sse_server.with_service(move || {
-        HttpMcpService::new(Arc::clone(&spec), base_url.clone(), Arc::clone(&client))
+        HTTPBridge::new(Arc::clone(&spec), base_url.clone(), Arc::clone(&client))
     });
     Ok(ctoken)
 }
@@ -1523,7 +1523,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         // Test tool execution
         let arguments = json!({
@@ -1575,7 +1575,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let result = server.execute_tool("healthCheck", json!({})).await;
         assert!(result.is_ok());
@@ -1673,7 +1673,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let arguments = json!({
             "limit": 10,
@@ -1763,7 +1763,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let arguments = json!({
             "headers": {
@@ -1868,7 +1868,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let arguments = json!({
             "body": {
@@ -1919,7 +1919,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let result = server.execute_tool("errorEndpoint", json!({})).await;
         assert!(result.is_ok());
@@ -1935,8 +1935,7 @@ mod tests {
     async fn test_tool_not_found() {
         let spec = create_simple_spec();
         let client = Arc::new(reqwest::Client::new());
-        let server =
-            HttpMcpService::new(Arc::new(spec), "http://localhost:3000".to_string(), client);
+        let server = HTTPBridge::new(Arc::new(spec), "http://localhost:3000".to_string(), client);
 
         let result = server.execute_tool("nonExistentTool", json!({})).await;
         assert!(result.is_err());
@@ -2003,7 +2002,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let arguments = json!({
             "headers": {
@@ -2075,7 +2074,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let arguments = json!({
             "headers": {
@@ -2147,7 +2146,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let arguments = json!({
             "headers": {
@@ -2267,7 +2266,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let arguments = json!({
             "headers": {
@@ -2342,7 +2341,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         // Missing required headers should cause validation error
         let arguments = json!({});
@@ -2409,7 +2408,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         // No headers provided - should work since auth is optional
         let arguments = json!({});
@@ -2467,8 +2466,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server =
-            HttpMcpService::new(Arc::new(spec), "http://localhost:3000".to_string(), client);
+        let server = HTTPBridge::new(Arc::new(spec), "http://localhost:3000".to_string(), client);
 
         // Test with invalid parameter (out of range)
         let arguments = json!({
@@ -2525,8 +2523,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server =
-            HttpMcpService::new(Arc::new(spec), "http://localhost:3000".to_string(), client);
+        let server = HTTPBridge::new(Arc::new(spec), "http://localhost:3000".to_string(), client);
 
         // Test with missing required parameter
         let arguments = json!({});
@@ -2545,7 +2542,7 @@ mod tests {
         let spec = create_simple_spec();
         let client = Arc::new(reqwest::Client::new());
         // Use invalid URL that will cause network error
-        let _server = HttpMcpService::new(
+        let _server = HTTPBridge::new(
             Arc::new(spec),
             "http://invalid-host-that-does-not-exist:9999".to_string(),
             Arc::clone(&client),
@@ -2568,7 +2565,7 @@ mod tests {
             paths
         };
 
-        let server = HttpMcpService::new(
+        let server = HTTPBridge::new(
             Arc::new(spec_with_endpoint),
             "http://invalid-host-that-does-not-exist:9999".to_string(),
             client,
@@ -2629,7 +2626,7 @@ mod tests {
             reqwest::Client::builder().timeout(Duration::from_millis(500)).build().unwrap(),
         );
 
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let result = server.execute_tool("slowEndpoint", json!({})).await;
         assert!(result.is_ok());
@@ -2677,7 +2674,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let result = server.execute_tool("malformedJson", json!({})).await;
         assert!(result.is_ok());
@@ -2721,7 +2718,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(Arc::new(spec), mock_server.uri(), client);
+        let server = HTTPBridge::new(Arc::new(spec), mock_server.uri(), client);
 
         let result = server.execute_tool("notFound", json!({})).await;
         assert!(result.is_ok());
@@ -2737,7 +2734,7 @@ mod tests {
     async fn test_invalid_schema_generation() {
         // This test will trigger an error in input schema generation
         let client = Arc::new(reqwest::Client::new());
-        let server = HttpMcpService::new(
+        let server = HTTPBridge::new(
             Arc::new(create_simple_spec()),
             "http://localhost:3000".to_string(),
             client,
@@ -2774,8 +2771,7 @@ mod tests {
         };
 
         let client = Arc::new(reqwest::Client::new());
-        let server =
-            HttpMcpService::new(Arc::new(spec), "http://localhost:3000".to_string(), client);
+        let server = HTTPBridge::new(Arc::new(spec), "http://localhost:3000".to_string(), client);
 
         // The trace method should not be included in generated tools
         // since it's not handled in the tool_infos function

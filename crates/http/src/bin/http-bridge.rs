@@ -67,7 +67,7 @@ async fn main() {
         .expect("Failed to build HTTP client");
 
     let mcp_ct =
-        brwse_bridge_http::mcp::start(&args.bridge.listen, spec, base_url, Arc::new(client))
+        brwse_bridge_http::bridge::start(&args.bridge.listen, spec, base_url, Arc::new(client))
             .await
             .expect("failed to start MCP server");
 

@@ -2,5 +2,5 @@
 
 pub mod conn_string;
 mod maybe_tls_stream;
-pub mod mcp;
+pub mod bridge;
 mod schema;

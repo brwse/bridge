@@ -1,6 +1,6 @@
 use std::{io::Write, sync::Arc};
 
-use brwse_bridge_http::{mcp::HttpMcpService, openapi};
+use brwse_bridge_http::{bridge::HTTPBridge, openapi};
 use insta::assert_json_snapshot;
 use serde_json::json;
 use tempfile::NamedTempFile;
@@ -196,7 +196,7 @@ async fn test_complete_openapi_to_mcp_workflow() {
     // Step 4: Create HTTP MCP server
     let client = Arc::new(reqwest::Client::new());
     let spec = Arc::new(spec);
-    let service = HttpMcpService::new(Arc::clone(&spec), mock_server.uri(), Arc::clone(&client));
+    let service = HTTPBridge::new(Arc::clone(&spec), mock_server.uri(), Arc::clone(&client));
 
     // Step 5: Test tool listing
     let tools = service.tools(None).collect::<Vec<_>>();

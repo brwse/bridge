@@ -47,7 +47,7 @@ async fn main() {
         }
     });
 
-    let mcp_ct = brwse_bridge_postgres::mcp::start(&args.bridge.listen, Arc::new(client))
+    let mcp_ct = brwse_bridge_postgres::bridge::start(&args.bridge.listen, Arc::new(client))
         .await
         .expect("failed to start MCP server");
 

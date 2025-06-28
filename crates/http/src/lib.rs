@@ -1,2 +1,2 @@
-pub mod mcp;
+pub mod bridge;
 pub mod openapi;
