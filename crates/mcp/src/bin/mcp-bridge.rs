@@ -1,4 +1,4 @@
-use brwse_bridge_cli::{BridgeArgs, setup_registry};
+use brwse_bridge_cli::BridgeArgs;
 use clap::Parser;
 use tracing::info;
 
@@ -22,11 +22,6 @@ async fn main() {
     tracing_subscriber::fmt::init();
 
     let args = Args::parse();
-
-    // Setup registry
-    if args.bridge.registry.br_token.is_some() {
-        setup_registry(&args.bridge.registry).await;
-    }
 
     let mcp_bridge = brwse_bridge_mcp::bridge::McpBridge::new(args.mcp_url);
     let mcp_ct = brwse_bridge_mcp::bridge::start(&args.bridge.listen, mcp_bridge)

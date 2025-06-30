@@ -1,6 +1,6 @@
 use std::{process, sync::Arc};
 
-use brwse_bridge_cli::{BridgeArgs, setup_registry};
+use brwse_bridge_cli::{BridgeArgs};
 use clap::Parser;
 use tracing::{error, info};
 
@@ -28,11 +28,6 @@ async fn main() {
     tracing_subscriber::fmt::init();
 
     let args = Args::parse();
-
-    // Setup registry
-    if args.bridge.registry.br_token.is_some() {
-        setup_registry(&args.bridge.registry).await;
-    }
 
     // Load and parse OpenAPI spec
     info!("Loading OpenAPI spec from: {}", args.openapi_spec);
