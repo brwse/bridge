@@ -13,9 +13,10 @@ assert2 = "0.3"
 async-trait = "0.1"
 base64 = "0.22"
 base64-serde = "0.8"
-brwse-bridge-cli = { path = "crates/bridge-cli", version = "0.0.2" }
-brwse-bridge-registry = { path = "crates/registry", version = "0.0.3" }
+brwse-bridge-cli = { path = "crates/bridge-cli" }
+brwse-bridge-registry = { path = "crates/registry" }
 byteorder = "1.5"
+brwse-bridge-mcp = { path = "crates/mcp" }
 bytes = "1.10"
 chrono = { version = "0.4", features = ["serde"] }
 cidr = { version = "0.3", features = ["serde"] }
@@ -37,11 +38,6 @@ prost = "0.13"
 prost-types = "0.13"
 rand = "0.9"
 reqwest = { version = "0.12", features = ["json"] }
-rmcp = { version = "0.1", features = [
-    "server",
-    "transport-sse-server",
-    "client",
-] }
 rsa = "0.9"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["raw_value"] }
@@ -60,6 +56,13 @@ tokio-postgres = { version = "0.7", features = [
     "with-geo-types-0_7",
     "with-eui48-1",
     "with-serde_json-1",
+] }
+rmcp = { git = "https://github.com/modelcontextprotocol/rust-sdk.git", rev = "9ca20c69b27e531a5eadfd4b5654592ab93e2b11", features = [
+    "server",
+    "transport-sse-server",
+    "client",
+    "transport-sse-client",
+    "reqwest",
 ] }
 tokio-stream = "0.1"
 tokio-tungstenite = "0.27"

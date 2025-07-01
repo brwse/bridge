@@ -1,6 +1,7 @@
 use std::{process, sync::Arc};
 
 use brwse_bridge_cli::BridgeArgs;
+use brwse_bridge_postgres::bridge::PostgresBridge;
 use clap::Parser;
 use tracing::{error, info};
 
@@ -42,7 +43,9 @@ async fn main() {
         }
     });
 
-    let mcp_ct = brwse_bridge_postgres::bridge::start(&args.bridge.listen, Arc::new(client))
+    let bridge = PostgresBridge::new(Arc::new(client));
+
+    let mcp_ct = brwse_bridge_mcp::bridge::start(&args.bridge.listen, bridge)
         .await
         .expect("failed to start MCP server");
 

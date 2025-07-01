@@ -21,6 +21,7 @@ indexmap.workspace = true
 jsonschema.workspace = true
 openapiv3 = "2.0"
 openssl.workspace = true
+brwse-bridge-mcp.workspace = true
 rand.workspace = true
 reqwest.workspace = true
 rmcp.workspace = true

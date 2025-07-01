@@ -19,6 +19,7 @@ byteorder.workspace = true
 bytes.workspace = true
 cidr.workspace = true
 clap.workspace = true
+brwse-bridge-mcp.workspace = true
 eui48.workspace = true
 futures.workspace = true
 genawaiter.workspace = true

@@ -1,6 +1,7 @@
 use std::{process, sync::Arc};
 
-use brwse_bridge_cli::{BridgeArgs};
+use brwse_bridge_cli::BridgeArgs;
+use brwse_bridge_http::bridge::HTTPBridge;
 use clap::Parser;
 use tracing::{error, info};
 
@@ -61,10 +62,11 @@ async fn main() {
         .build()
         .expect("Failed to build HTTP client");
 
-    let mcp_ct =
-        brwse_bridge_http::bridge::start(&args.bridge.listen, spec, base_url, Arc::new(client))
-            .await
-            .expect("failed to start MCP server");
+    let bridge = HTTPBridge::new(spec, base_url, Arc::new(client));
+
+    let mcp_ct = brwse_bridge_mcp::bridge::start(&args.bridge.listen, bridge)
+        .await
+        .expect("failed to start MCP server");
 
     let _result = tokio::signal::ctrl_c().await;
     info!("Received shutdown signal, stopping bridge...");

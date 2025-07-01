@@ -1,7 +1,6 @@
 use std::{
     borrow::Cow,
     collections::{BTreeMap, HashSet},
-    io,
     sync::Arc,
 };
 
@@ -10,15 +9,13 @@ use openapiv3::{OpenAPI, Operation, Parameter, PathItem, ReferenceOr};
 use rmcp::{
     RoleServer,
     model::{
-        CallToolRequestParam, CallToolResult, Content, ListToolsResult, PaginatedRequestParam,
-        ServerCapabilities, ServerInfo, Tool,
+        CallToolRequestParam, CallToolResult, Content, ListToolsResult, ServerCapabilities,
+        ServerInfo, Tool,
     },
     service::RequestContext,
-    transport::{SseServer, sse_server::SseServerConfig},
 };
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
-use tokio_util::sync::CancellationToken;
 
 fn resolve_schema_with_visited(
     schema_ref: &ReferenceOr<openapiv3::Schema>,
@@ -836,7 +833,7 @@ impl rmcp::ServerHandler for HTTPBridge {
 
     async fn list_tools(
         &self,
-        request: PaginatedRequestParam,
+        request: Option<rmcp::model::PaginatedRequestParam>,
         _context: RequestContext<RoleServer>,
     ) -> Result<ListToolsResult, rmcp::Error> {
         let tools = self.tools(request.and_then(|c| c.cursor)).take(10).collect::<Vec<_>>();
@@ -854,27 +851,6 @@ impl rmcp::ServerHandler for HTTPBridge {
         // Execute tool directly from spec
         self.execute_tool(name, arguments).await
     }
-}
-
-pub async fn start(
-    addr: &str,
-    spec: Arc<OpenAPI>,
-    base_url: String,
-    client: Arc<reqwest::Client>,
-) -> io::Result<CancellationToken> {
-    let ctoken = CancellationToken::new();
-    let config = SseServerConfig {
-        bind: addr.parse().map_err(io::Error::other)?,
-        sse_path: "/sse".to_string(),
-        post_path: "/message".to_string(),
-        ct: ctoken.clone(),
-    };
-
-    let sse_server = SseServer::serve_with_config(config).await?;
-    sse_server.with_service(move || {
-        HTTPBridge::new(Arc::clone(&spec), base_url.clone(), Arc::clone(&client))
-    });
-    Ok(ctoken)
 }
 
 pub fn to_canonical_string(value: &Value) -> Option<String> {

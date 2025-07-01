@@ -14,13 +14,7 @@ path = "src/bin/mcp-bridge.rs"
 brwse-bridge-cli.workspace = true
 clap.workspace = true
 futures.workspace = true
-rmcp = { git = "https://github.com/modelcontextprotocol/rust-sdk.git", features = [
-    "server",
-    "transport-sse-server",
-    "client",
-    "transport-sse-client",
-    "reqwest",
-] }
+rmcp.workspace = true
 time.workspace = true
 tokio-util.workspace = true
 tokio.workspace = true

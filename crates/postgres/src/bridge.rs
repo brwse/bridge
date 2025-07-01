@@ -1,6 +1,6 @@
 mod value;
 
-use std::{io, sync::Arc};
+use std::sync::Arc;
 
 use assert2::let_assert;
 use indexmap::IndexMap;
@@ -8,17 +8,15 @@ pub use rmcp::handler::server::tool::Parameters;
 use rmcp::{
     RoleServer,
     model::{
-        CallToolRequestParam, CallToolResult, Content, ListToolsResult, PaginatedRequestParam,
-        ServerCapabilities, ServerInfo, Tool,
+        CallToolRequestParam, CallToolResult, Content, ListToolsResult, ServerCapabilities,
+        ServerInfo, Tool,
     },
     service::RequestContext,
-    transport::{SseServer, sse_server::SseServerConfig},
 };
 use schemars::{JsonSchema, schema_for};
 use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 use tokio_postgres::types::ToSql;
-use tokio_util::sync::CancellationToken;
 
 use crate::{bridge::value::Value, schema::remove_excess};
 
@@ -37,7 +35,7 @@ pub struct PostgresBridge {
 }
 
 impl PostgresBridge {
-    fn new(client: Arc<tokio_postgres::Client>) -> Self {
+    pub fn new(client: Arc<tokio_postgres::Client>) -> Self {
         Self { client }
     }
 
@@ -89,7 +87,7 @@ impl rmcp::ServerHandler for PostgresBridge {
 
     async fn list_tools(
         &self,
-        _request: PaginatedRequestParam,
+        _request: std::option::Option<rmcp::model::PaginatedRequestParam>,
         _context: RequestContext<RoleServer>,
     ) -> Result<ListToolsResult, rmcp::Error> {
         let schema = schema_for!(QueryParam);
@@ -113,21 +111,4 @@ impl rmcp::ServerHandler for PostgresBridge {
         // Execute tool directly from spec
         self.query(params).await
     }
-}
-
-pub async fn start(
-    addr: &str,
-    client: Arc<tokio_postgres::Client>,
-) -> io::Result<CancellationToken> {
-    let ctoken = CancellationToken::new();
-    let config = SseServerConfig {
-        bind: addr.parse().map_err(io::Error::other)?,
-        sse_path: "/sse".to_string(),
-        post_path: "/message".to_string(),
-        ct: ctoken.clone(),
-    };
-
-    let sse_server = SseServer::serve_with_config(config).await?;
-    sse_server.with_service(move || PostgresBridge::new(Arc::clone(&client)));
-    Ok(ctoken)
 }
